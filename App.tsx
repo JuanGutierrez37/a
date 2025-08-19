@@ -32,10 +32,19 @@ function App(): React.JSX.Element {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [paciente, setPaciente] = useState<Paciente | null>(null);
 
+
+  // Función para editar paciente (abre el formulario)
   const pacienteEditar = (id: any) => {
     const pacienteEditar = pacientes.filter(paciente => paciente.id === id);
     setPaciente(pacienteEditar[0]);
     setModalVisible(true);
+  };
+
+  // Función para mostrar detalle de paciente (abre el modal de detalle)
+  const pacienteDetalle = (id: any) => {
+    const pacienteDetalle = pacientes.filter(paciente => paciente.id === id);
+    setPaciente(pacienteDetalle[0]);
+    setModalDetalle(true);
   };
 
   const pacienteEliminar = (id: any) =>{
@@ -52,7 +61,6 @@ function App(): React.JSX.Element {
           text: "Eliminar",
           onPress: () => {
             console.log(`Paciente con id: ${id} eliminado`);
-
             const nuevosPacientes = pacientes.filter(paciente => paciente.id !== id);
             setPacientes(nuevosPacientes);
           },
@@ -62,6 +70,7 @@ function App(): React.JSX.Element {
   }
 
   const nuevaCitaHandler = () => {
+    setPaciente(null);
     setModalVisible(!modalVisible);
   };
 
@@ -83,7 +92,7 @@ function App(): React.JSX.Element {
       />
 
       <Modal visible={modalDetalle} animationType='fade'>
-        <ModalDetalle paciente={paciente} setModalDetalle={setModalDetalle}/>
+        <ModalDetalle paciente={paciente} setModalDetalle={setModalDetalle} setPaciente={setPaciente}/>
       </Modal>
 
       {pacientes.length === 0 ? (
@@ -99,9 +108,9 @@ function App(): React.JSX.Element {
               <PacienteItem
                 item={item}
                 setModalVisible={setModalVisible}
-                setPaciente={pacienteEditar}
+                setPacienteEditar={pacienteEditar}
                 setPacienteEliminar={pacienteEliminar}
-                setModalDetalle={setModalDetalle}
+                setPacienteDetalle={pacienteDetalle}
               />
             )}
           />
